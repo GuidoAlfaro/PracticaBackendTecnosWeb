@@ -1,65 +1,97 @@
 Rutas de Actores
 
 Este documento define rutas para gestionar actores en una base de datos. Proporciona operaciones para obtener actores, obtener un actor por ID, crear un nuevo actor, actualizar un actor existente y eliminar un actor.
-Ruta: Obtener Todos los Actores
 
-    URL: /actors
-    Método HTTP: GET
-    Descripción: Obtiene todos los actores almacenados en la base de datos.
-    Parámetros de consulta: Ninguno.
-    Respuestas:
-        Código de estado 200: Devuelve una matriz de objetos JSON que representan a los actores.
-        Código de estado 500: Si se produce un error al obtener los actores.
+Obtener todos los actores
 
-Ruta: Obtener un Actor por ID
+    Ruta: GET /api/actors
+    Descripción: Esta ruta te permite obtener una lista de todos los actores en la base de datos.
+    Parámetros de consulta opcionales:
+    Ejemplo de solicitud: GET /api/actors/
+    Respuesta exitosa (código 200): Devuelve una lista de actores en formato JSON.
 
-    URL: /actors/:id
-    Método HTTP: GET
-    Descripción: Obtiene un actor específico por su ID.
-    Parámetros de ruta: id (ID del actor que se desea obtener).
-    Respuestas:
-        Código de estado 200: Devuelve un objeto JSON que representa al actor.
-        Código de estado 404: Si el actor no se encuentra en la base de datos.
-        Código de estado 500: Si se produce un error al obtener el actor.
+Obtener actores con paginación
 
-Ruta: Crear un Nuevo Actor
+    Ruta: GET /api/actors/paginated
+    Descripción: Esta ruta te permite obtener una lista de actores con paginación, lo que significa que se obtendrán solo un número limitado de registros por página.
+    Parámetros de consulta opcionales:
+        page: Número de página (por defecto es 1).
+        limit: Número de registros por página (por defecto es 10).
+    Ejemplo de solicitud: GET /api/actors/paginated?page=1&limit=10
+    Respuesta exitosa (código 200): Devuelve una lista de actores con paginación en formato JSON.
 
-    URL: /actors
-    Método HTTP: POST
-    Descripción: Crea un nuevo actor en la base de datos.
-    Parámetros de cuerpo (en el JSON de la solicitud):
-        first_name (nombre del actor).
-        last_name (apellido del actor).
-        usuario (para acceder, el usuario debe ser igual a "admin").
-    Respuestas:
-        Código de estado 200: El actor se crea con éxito.
-        Código de estado 403: Acceso no autorizado si el usuario no es igual a "admin".
-        Código de estado 500: Si se produce un error al crear el actor.
+Obtener un actor por ID
 
-Ruta: Actualizar un Actor por ID
+    Ruta: GET /api/actors/:id
+    Descripción: Esta ruta te permite obtener un actor específico por su ID.
+    Parámetros de ruta obligatorios:
+        id: ID del actor que deseas obtener.
+    Ejemplo de solicitud: GET /api/actors/1
+    Respuesta exitosa (código 200): Devuelve los detalles del actor en formato JSON.
+    Respuesta de error (código 404): Si el actor no se encuentra en la base de datos.
 
-    URL: /actors/:id
-    Método HTTP: PUT
-    Descripción: Actualiza un actor existente por su ID.
-    Parámetros de ruta: id (ID del actor que se desea actualizar).
-    Parámetros de cuerpo (en el JSON de la solicitud):
-        first_name (nombre actualizado del actor).
-        last_name (apellido actualizado del actor).
-        usuario (para acceder, el usuario debe ser igual a "admin").
-    Respuestas:
-        Código de estado 200: El actor se actualiza con éxito.
-        Código de estado 403: Acceso no autorizado si el usuario no es igual a "admin".
-        Código de estado 500: Si se produce un error al actualizar el actor.
+Crear un nuevo actor
 
-Ruta: Eliminar un Actor por ID
+    Ruta: POST /api/actors
+    Descripción: Esta ruta te permite crear un nuevo actor en la base de datos.
+    Cuerpo de la solicitud (JSON):
+        first_name: Nombre del actor.
+        last_name: Apellido del actor.
+        usuario: Debe ser igual a "admin" para autorizar la creación.
+    Ejemplo de solicitud:
 
-    URL: /actors/:id
-    Método HTTP: DELETE
-    Descripción: Elimina un actor existente por su ID.
-    Parámetros de ruta: id (ID del actor que se desea eliminar).
-    Parámetros de cuerpo (en el JSON de la solicitud):
-        usuario (para acceder, el usuario debe ser igual a "admin").
-    Respuestas:
-        Código de estado 200: El actor se elimina con éxito.
-        Código de estado 403: Acceso no autorizado si el usuario no es igual a "admin".
-        Código de estado 500: Si se produce un error al eliminar el actor.
+    json
+
+    POST /api/actors
+    {
+      "first_name": "Nombre",
+      "last_name": "Apellido",
+      "usuario": "admin"
+    }
+
+    Respuesta exitosa (código 200): Devuelve un mensaje indicando que el actor se ha creado con éxito.
+    Respuesta de error (código 403): Si el valor de usuario no es igual a "admin", se denegará el acceso.
+
+Actualizar un actor por ID
+
+    Ruta: PUT /api/actors/:id
+    Descripción: Esta ruta te permite actualizar un actor existente en la base de datos por su ID.
+    Parámetros de ruta obligatorios:
+        id: ID del actor que deseas actualizar.
+    Cuerpo de la solicitud (JSON):
+        first_name: Nuevo nombre del actor.
+        last_name: Nuevo apellido del actor.
+        usuario: Debe ser igual a "admin" para autorizar la actualización.
+    Ejemplo de solicitud:
+
+    json
+
+    PUT /api/actors/1
+    {
+      "first_name": "Nuevo Nombre",
+      "last_name": "Nuevo Apellido",
+      "usuario": "admin"
+    }
+
+    Respuesta exitosa (código 200): Devuelve un mensaje indicando que el actor se ha actualizado con éxito.
+    Respuesta de error (código 403): Si el valor de usuario no es igual a "admin", se denegará el acceso.
+
+Eliminar un actor por ID
+
+    Ruta: DELETE /api/actors/:id
+    Descripción: Esta ruta te permite eliminar un actor existente en la base de datos por su ID.
+    Parámetros de ruta obligatorios:
+        id: ID del actor que deseas eliminar.
+    Cuerpo de la solicitud (JSON):
+        usuario: Debe ser igual a "admin" para autorizar la eliminación.
+    Ejemplo de solicitud:
+
+    json
+
+    DELETE /api/actors/1
+    {
+    "usuario": "admin"
+    }
+
+    Respuesta exitosa (código 200): Devuelve un mensaje indicando que el actor se ha eliminado con éxito.
+    Respuesta de error (código 403): Si el valor de usuario no es igual a "admin", se denegará el acceso.
