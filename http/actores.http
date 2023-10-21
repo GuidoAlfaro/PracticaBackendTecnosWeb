@@ -1,0 +1,11 @@
+GET http://localhost:3000/api/actors/
+###
+
+POST http://localhost:3000/api/actors/
+Content-Type: application/json
+Accept: application/json
+{
+    "first_name": "John",
+    "last_name": "Doe",
+    "usuario": "xd"
+}
