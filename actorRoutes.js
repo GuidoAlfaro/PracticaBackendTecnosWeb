@@ -1,11 +1,10 @@
-// categoryRoutes.js
 const express = require("express");
 const router = express.Router();
-const db = require("./db"); // Importa la conexión a la base de datos
+const db = require("./db");
 
 // Obtener todos los actores
 router.get("/actors", (req, res) => {   
-    db.query("SELECT first_name FROM actor", (error, results) => {
+    db.query("SELECT * FROM actor", (error, results) => {
         if (error) {
             res.status(500).json({ error: "Error al obtener los actores." });
             return;
@@ -14,7 +13,6 @@ router.get("/actors", (req, res) => {
     });
 });
 
-// Obtener un actor por ID
 router.get("/actors/:id", (req, res) => {
     const actorId = req.params.id;
     db.query(
@@ -34,11 +32,9 @@ router.get("/actors/:id", (req, res) => {
     );
 });
 
-// Crear un nuevo actor
 router.post("/actors", (req, res) => {
   const { first_name, last_name, usuario } = req.body;
   
-  // Verificar si el usuario es igual a "admin"
   if (usuario !== "admin") {
       res.status(403).json({ error: "Acceso no autorizado." });
       return;
@@ -57,12 +53,10 @@ router.post("/actors", (req, res) => {
   );
 });
 
-// Actualizar un actor por ID
 router.put("/actors/:id", (req, res) => {
   const actorId = req.params.id;
   const { first_name, last_name, usuario } = req.body;
 
-  // Verificar si el usuario es igual a "admin"
   if (usuario !== "admin") {
       res.status(403).json({ error: "Acceso no autorizado." });
       return;
@@ -81,12 +75,10 @@ router.put("/actors/:id", (req, res) => {
   );
 });
 
-// Eliminar un actor por ID
 router.delete("/actors/:id", (req, res) => {
   const actorId = req.params.id;
   const { usuario } = req.body;
 
-  // Verificar si el usuario es igual a "admin"
   if (usuario !== "admin") {
       res.status(403).json({ error: "Acceso no autorizado." });
       return;
